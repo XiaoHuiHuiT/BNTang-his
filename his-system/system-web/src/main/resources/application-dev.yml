@@ -1,15 +1,15 @@
-#端口
+# 端口
 server:
   port: 8080
-#spring的配置
+# spring的配置
 spring:
-  #数据源的配置
+  # 数据源的配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/bjsxt-his?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/bntang-his?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: 123456
-    #注入数据源的类型   默认的为HikariDataSource
+    # 注入数据源的类型,默认的为HikariDataSource
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       max-active: 20
@@ -18,42 +18,46 @@ spring:
       initial-size: 3
       max-wait: 5000
       stat-view-servlet:
-        #        login-username: root
-        #        login-password: 123456
         allow:
         deny:
         url-pattern: /druid/*
-        enabled: true  #启用数据源监控
-  #配置redis
+        # 启用数据源监控
+        enabled: true
+  # 配置redis
   redis:
     port: 6390
     host: 39.106.71.75
-    password: 123456
+    password: 1234
+  # 从前端到后端日期的格式化
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss
+  # 从后端到前端的日期格式化
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 
-#shiro配置
+# Shiro配置
 shiro:
-  #login-url: /index.html
+  # 放行路径
   anon-urls:
     - /login/doLogin*
     - /login/captcha*
     - /login/logout*
     - /pay/callback*/**
-    #    - /system/upload/*
     - /druid/**
+  # 除了放行的路径以为的路径全部拦截
   authc-urls:
     - /**
-#mybatisplus的配置
+# mybatis-plus的配置
 mybatis-plus:
   configuration:
+    # SQL控制台打印
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # mapper.xml文件的扫描
   mapper-locations: classpath:mapper/*/*Mapper.xml
   global-config:
     db-config:
+      # id生成策略
       id-type: auto
 # FastDFS的配置
 fdfs:
