@@ -73,6 +73,7 @@ fdfs:
     # tracker服务配置地址列表
     - 39.106.71.75:22122
 upload:
+  # 文件上传地址
   base-url: http://39.106.71.75:8888
   allow-types:
     - image/jpeg
@@ -81,8 +82,10 @@ upload:
 # dubbo的配置
 dubbo:
   application:
+    # 服务名称
     name: his-system-web-service
   registry:
+    # 注册地址
     address: zookeeper://39.106.71.75:2181
   consumer:
     check: false
