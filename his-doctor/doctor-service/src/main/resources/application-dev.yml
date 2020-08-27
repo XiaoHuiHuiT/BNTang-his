@@ -89,3 +89,10 @@ dubbo:
     address: zookeeper://39.106.71.75:2181
   consumer:
     check: false
+  protocol:
+    # 随机端口
+    port: -1
+    name: dubbo
+  scan:
+    # 扫描的包
+    base-packages: com.bjsxt.service.impl

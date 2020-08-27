@@ -1,6 +1,3 @@
-# 端口
-server:
-  port: 8080
 # spring的配置
 spring:
   # 数据源的配置
@@ -89,3 +86,10 @@ dubbo:
     address: zookeeper://39.106.71.75:2181
   consumer:
     check: false
+  protocol:
+    # 随机端口
+    port: -1
+    name: dubbo
+  scan:
+    # 扫描的包
+    base-packages: com.bjsxt.service.impl
