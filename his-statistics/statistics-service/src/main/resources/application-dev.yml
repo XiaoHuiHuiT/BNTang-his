@@ -35,7 +35,7 @@ mybatis-plus:
 dubbo:
   application:
     # 服务名称
-    name: his-erp-service
+    name: his-statistics-service
   registry:
     # 注册地址
     address: zookeeper://39.106.71.75:2181

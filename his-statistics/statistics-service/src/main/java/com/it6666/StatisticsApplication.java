@@ -6,17 +6,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author 39.106.71.75
+ * @author BNTang
  * @version V1.1.1
  * @program BNTang-his
- * @date Created in 2020/8/27 17:43
- * @description 进销存模块启动类
+ * @date Created in 2020/8/28 14:43
+ * @description 统计模块启动类
  **/
 @SpringBootApplication
 @MapperScan(basePackages = {"com.it6666.mapper"})
 @EnableDubbo
-public class ErpApplication {
+public class StatisticsApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(ErpApplication.class,args);
+        SpringApplication.run(StatisticsApplication.class, args);
     }
 }

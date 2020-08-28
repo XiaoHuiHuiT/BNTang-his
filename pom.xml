@@ -12,6 +12,7 @@
         <module>his-system</module>
         <module>his-erp</module>
         <module>his-doctor</module>
+        <module>his-statistics</module>
     </modules>
 
     <parent>
