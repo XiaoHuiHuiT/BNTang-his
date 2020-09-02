@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 /**
  * @author BNTang
  */
-public interface UserService extends IService<User> {
+public interface UserService {
 
     /**
      * 根据手机号查询用户

@@ -11,7 +11,7 @@ import com.it6666.service.UserService;
  * @author BNTang
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
