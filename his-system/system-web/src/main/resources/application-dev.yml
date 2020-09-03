@@ -54,7 +54,7 @@ mybatis-plus:
     # SQL控制台打印
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   # mapper.xml文件的扫描
-  mapper-locations: classpath:mapper/*/*Mapper.xml
+  mapper-locations: classpath:mapper/*Mapper.xml
   global-config:
     db-config:
       # id生成策略
