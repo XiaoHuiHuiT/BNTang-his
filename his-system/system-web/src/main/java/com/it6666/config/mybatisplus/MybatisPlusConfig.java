@@ -1,4 +1,4 @@
-package com.it6666.config;
+package com.it6666.config.mybatisplus;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
