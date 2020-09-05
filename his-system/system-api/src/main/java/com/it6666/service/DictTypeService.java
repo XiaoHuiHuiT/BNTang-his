@@ -61,4 +61,8 @@ public interface DictTypeService {
      */
     DictType selectDictTypeById(Long dictId);
 
+    /**
+     * 同步缓存
+     */
+    void dictCacheAsync();
 }

@@ -2,6 +2,7 @@ package com.it6666.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.it6666.constants.Constants;
@@ -9,6 +10,8 @@ import com.it6666.dto.DictDataDto;
 import com.it6666.vo.DataGridView;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -23,6 +26,24 @@ public class DictDataServiceImpl implements DictDataService {
 
     @Autowired
     private DictDataMapper dictDataMapper;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    /**
+     * 之前是从数据库里面查询, 因为我们做到了redis中，所以现在要去redis里面去查询
+     *
+     * @param dictType
+     * @return
+     */
+    @Override
+    public List<DictData> selectDictDataByDictType(String dictType) {
+        String key = Constants.DICT_REDIS_PROFIX + dictType;
+        ValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
+        String json = opsForValue.get(key);
+        List<DictData> dictDatas = JSON.parseArray(json, DictData.class);
+        return dictDatas;
+    }
 
     @Override
     public DataGridView listPage(DictDataDto dictDataDto) {
@@ -62,15 +83,6 @@ public class DictDataServiceImpl implements DictDataService {
         } else {
             return -1;
         }
-    }
-
-    @Override
-    public List<DictData> selectDictDataByDictType(String dictType) {
-        QueryWrapper<DictData> qw = new QueryWrapper<>();
-        qw.eq(DictData.COL_DICT_TYPE, dictType);
-        // 可用的
-        qw.eq(DictData.COL_STATUS, Constants.STATUS_TRUE);
-        return this.dictDataMapper.selectList(qw);
     }
 
     @Override

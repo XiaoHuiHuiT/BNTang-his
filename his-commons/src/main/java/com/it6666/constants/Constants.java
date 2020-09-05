@@ -130,4 +130,9 @@ public interface Constants {
      */
     String PAY_TYPE_0 = "0";
     String PAY_TYPE_1 = "1";
+
+    /**
+     * redis的字典前缀
+     */
+    String DICT_REDIS_PROFIX = "dict:";
 }

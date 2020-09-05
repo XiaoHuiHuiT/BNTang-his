@@ -2,13 +2,18 @@ package com.it6666.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.it6666.constants.Constants;
+import com.it6666.domain.DictData;
 import com.it6666.dto.DictTypeDto;
+import com.it6666.mapper.DictDataMapper;
 import com.it6666.vo.DataGridView;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import com.it6666.domain.DictType;
@@ -23,6 +28,28 @@ public class DictTypeServiceImpl implements DictTypeService {
 
     @Autowired
     private DictTypeMapper dictTypeMapper;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private DictDataMapper dictDataMapper;
+
+    @Override
+    public void dictCacheAsync() {
+        // 查询所有可用的dictType
+        QueryWrapper<DictType> qw = new QueryWrapper<>();
+        qw.ge(DictType.COL_STATUS, Constants.STATUS_TRUE);
+        List<DictType> dictTypes = this.dictTypeMapper.selectList(qw);
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        for (DictType dictType : dictTypes) {
+            QueryWrapper<DictData> qdw = new QueryWrapper<>();
+            qdw.ge(DictData.COL_STATUS, Constants.STATUS_TRUE);
+            qdw.eq(DictData.COL_DICT_TYPE, dictType.getDictType());
+            List<DictData> dictData = dictDataMapper.selectList(qdw);
+            valueOperations.set(Constants.DICT_REDIS_PROFIX + dictType.getDictType(), JSON.toJSONString(dictData));
+        }
+    }
 
     @Override
     public DataGridView listPage(DictTypeDto dictTypeDto) {
