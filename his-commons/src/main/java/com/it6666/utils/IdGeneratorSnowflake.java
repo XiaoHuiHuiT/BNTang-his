@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  **/
 public class IdGeneratorSnowflake {
 
-    private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(IdGeneratorSnowflake.class);
     private static long workId = 0;
     private static long datacenterId = 1;
     private static Snowflake snowflake;

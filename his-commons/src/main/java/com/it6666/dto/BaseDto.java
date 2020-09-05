@@ -1,6 +1,9 @@
 package com.it6666.dto;
 
 import com.it6666.domain.SimpleUser;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -13,6 +16,9 @@ import java.util.Date;
  * @date Created in 2020/9/1 18:01
  * @description 基础数据传输类
  **/
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BaseDto implements Serializable {
 
     /**

@@ -53,22 +53,22 @@ public class ShiroAutoConfiguration {
     @Bean
     public HashedCredentialsMatcher getHashedCredentialsMatcher() {
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
-        //注入散列算法名
+        // 注入散列算法名
         matcher.setHashAlgorithmName(shiroProperties.getHashAlgorithmName());
-        //注入散列次数
+        // 注入散列次数
         matcher.setHashIterations(shiroProperties.getHashIterations());
         return matcher;
     }
 
     /**
-     * 创建自定义realm
-     * 并注入凭证匹配器
+     * 创建自定义, realm
+     * 并注入, 凭证匹配器
      */
     @Bean
     @ConditionalOnClass(value = {UserRealm.class})
     public UserRealm getUserRealm(HashedCredentialsMatcher matcher) {
         UserRealm userRealm = new UserRealm();
-        //注入凭证匹配器
+        // 注入, 凭证匹配器
         userRealm.setCredentialsMatcher(matcher);
         return userRealm;
     }
@@ -80,7 +80,7 @@ public class ShiroAutoConfiguration {
     @ConditionalOnClass(value = DefaultWebSecurityManager.class)
     public DefaultWebSecurityManager getSecurityManager(DefaultWebSessionManager defaultWebSessionManager, UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        //注入realm
+        // 注入, realm
         securityManager.setRealm(userRealm);
         securityManager.setSessionManager(defaultWebSessionManager);
         return securityManager;
@@ -88,27 +88,27 @@ public class ShiroAutoConfiguration {
 
     /**
      * 声明过滤器
-     * Shiro 的Web过滤器 id必须和web.xml里面的shiroFilter的 targetBeanName的值一样
+     * Shiro 的Web过滤器, id必须和 web.xml 里面的 shiroFilter的 targetBeanName 的值一样
      */
     @Bean(value = SHIRO_FILTER_NAME)
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         // 注入安全管理器
         bean.setSecurityManager(securityManager);
-        // 处理用户未认证访问要认证的地址的跳转问题   默认是跳转到shiroProperties.getLoginUrl()现在改成以json串形式返回
+        // 处理用户未认证访问要认证的(资源)地址的跳转问题, 默认是跳转到, shiroProperties.getLoginUrl() 现在改成以 Json 串形式返回
         Map<String, Filter> filters = new HashMap<>();
         filters.put("authc", new ShiroLoginFilter());
         bean.setFilters(filters);
 
         Map<String, String> map = new HashMap<>();
-        //配置不拦击的路径
+        // 配置不拦截的路径
         String[] anonUrls = shiroProperties.getAnonUrls();
         if (anonUrls != null && anonUrls.length > 0) {
             for (String anonUrl : anonUrls) {
                 map.put(anonUrl, "anon");
             }
         }
-        //配置拦截的路径
+        // 配置拦截的路径
         String[] authcUrls = this.shiroProperties.getAuthcUrls();
         if (authcUrls != null && authcUrls.length > 0) {
             for (String authcUrl : authcUrls) {
@@ -125,11 +125,11 @@ public class ShiroAutoConfiguration {
      */
     @Bean
     public FilterRegistrationBean<DelegatingFilterProxy> registDelegatingFilterProxy() {
-        //创建注册器
+        // 创建注册器
         FilterRegistrationBean<DelegatingFilterProxy> bean = new FilterRegistrationBean<>();
-        //创建过滤器
+        // 创建过滤器
         DelegatingFilterProxy proxy = new DelegatingFilterProxy();
-        //注入过滤器
+        // 注入过滤器
         bean.setFilter(proxy);
         proxy.setTargetFilterLifecycle(true);
         proxy.setTargetBeanName(SHIRO_FILTER_NAME);
@@ -141,9 +141,9 @@ public class ShiroAutoConfiguration {
 
 
     /**
-     * sessionManager 里面可以决定sessionDAO
+     * sessionManager 里面可以决定 sessionDAO
      *
-     * @param redisSessionDao defaultWebSessionManager来源com.sxt.system.config.TokenWebSessionManager
+     * @param redisSessionDao defaultWebSessionManager 来源 com.it6666.system.config.TokenWebSessionManager
      * @return
      */
     @Bean
@@ -154,25 +154,27 @@ public class ShiroAutoConfiguration {
     }
 
     /**
-     * 使用Redis  来存储登录的信息
-     * sessionDao 还需要设置给sessionManager
+     * 使用Redis, 来存储登录的信息
+     * sessionDao 还需要设置给, sessionManager
      */
     @Bean
     public RedisSessionDAO redisSessionDAO(IRedisManager redisManager) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setRedisManager(redisManager); //操作那个redis
-        redisSessionDAO.setExpire(7 * 24 * 3600); // 用户的登录信息保存多久？ 7 天
+        // 操作那个 Redis
+        redisSessionDAO.setRedisManager(redisManager);
+        // 用户的登录信息保存多久, 7天
+        redisSessionDAO.setExpire(7 * 24 * 3600);
         return redisSessionDAO;
     }
 
     /**
-     * 因为分步式项目，所以使用redis去存我们的登陆Session
+     * 因为分步式项目，所以使用 Redis 去存我们的登陆 Session
      *
      * @return
      */
     @Bean
     public IRedisManager redisManager() {
-        //因为RedisManager要操作redis所以必须把Redis的客户端给RedisManager
+        // 因为 RedisManager 要操作 Redis 所以必须把Redis的客户端给RedisManager
         RedisManager redisManager = new RedisManager();
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, redisProperties.getHost(), redisProperties.getPort(), 5000, redisProperties.getPassword());
@@ -181,7 +183,7 @@ public class ShiroAutoConfiguration {
     }
 
 
-    /*加入注解的使用，不加入这个注解不生效--开始*/
+    // 加入注解的使用，不加入这个注解不生效,开始
 
     /**
      * @param securityManager
@@ -200,5 +202,5 @@ public class ShiroAutoConfiguration {
         advisorAutoProxyCreator.setProxyTargetClass(true);
         return advisorAutoProxyCreator;
     }
-    /*加入注解的使用，不加入这个注解不生效--结束*/
+    // 加入注解的使用，不加入这个注解不生效,结束
 }
