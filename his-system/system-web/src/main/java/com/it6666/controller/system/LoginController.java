@@ -1,5 +1,7 @@
 package com.it6666.controller.system;
 
+import com.it6666.aspectj.annotation.Log;
+import com.it6666.aspectj.enums.BusinessType;
 import com.it6666.constants.Constants;
 import com.it6666.constants.HttpStatus;
 import com.it6666.domain.Menu;
@@ -13,7 +15,6 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,7 @@ public class LoginController {
      * @return 结果
      */
     @PostMapping("login/doLogin")
+    @Log(title = "登录方法",businessType = BusinessType.OTHER)
     public AjaxResult login(@RequestBody @Validated LoginBodyDto loginBodyDto, HttpServletRequest request) {
         AjaxResult ajax = AjaxResult.success();
         String username = loginBodyDto.getUsername();
@@ -72,6 +74,7 @@ public class LoginController {
      * @return 用户信息
      */
     @GetMapping("login/getInfo")
+    @Log(title = "获取用户信息",businessType = BusinessType.OTHER)
     public AjaxResult getInfo() {
         Subject subject = SecurityUtils.getSubject();
         ActiverUser activerUser = (ActiverUser) subject.getPrincipal();
@@ -87,6 +90,7 @@ public class LoginController {
      * 用户退出
      */
     @GetMapping("login/logout")
+    @Log(title = "用户退出",businessType = BusinessType.FORCE)
     public AjaxResult logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
@@ -99,6 +103,7 @@ public class LoginController {
      * @return 菜单信息
      */
     @GetMapping("login/getMenus")
+    @Log(title = "获取应该显示的菜单信息",businessType = BusinessType.OTHER)
     public AjaxResult getMeuns() {
         Subject subject = SecurityUtils.getSubject();
         ActiverUser activerUser = (ActiverUser) subject.getPrincipal();
